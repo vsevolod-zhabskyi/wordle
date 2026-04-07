@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { isLetter } from './lib/utils.ts';
 import allAnswers from './answers.json';
 
@@ -19,72 +19,60 @@ function App() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    function handleLetterDown(e: KeyboardEvent) {
-      if (isWin) return;
-
-      if (!isLetter(e.key)) {
-        return;
-      }
-
-      const letterValue = e.key.toLowerCase();
-
-      inputLetter(letterValue);
-    }
-
-    document.addEventListener('keydown', handleLetterDown);
-
-    return () => document.removeEventListener('keydown', handleLetterDown);
-  }, [currentWordIndex, currentLetterIndex]);
-
-  useEffect(() => {
-    const enterListener = (e: KeyboardEvent) => {
-      if (e.key !== 'Enter') return;
-
-      const guess = inputtedWords[currentWordIndex]?.join('');
-
-      if (guess.length < 5) return;
-
-      if (!answers.has(guess)) {
-        alert(`No such word as ${guess}`);
-        return;
-      }
-
-      if (guess === answer) {
-        setIsWin(true);
-      }
-
-      setCurrentWordIndex((prev) => (prev <= 5 ? prev + 1 : prev));
-      setCurrentLetterIndex(0);
-    };
-
-    const backspaceListener = (e: KeyboardEvent) => {
-      if (e.key !== 'Backspace') return;
-
-      setInputtedWords((prev) =>
-        prev.map((word, wordIndex) =>
-          wordIndex === currentWordIndex
-            ? word.map((char, charIndex) =>
-                charIndex === currentLetterIndex - 1 ? '' : char,
-              )
-            : word,
-        ),
-      );
-      setCurrentLetterIndex((prev) => (prev <= 0 ? prev : prev - 1));
-    };
-
-    document.addEventListener('keydown', enterListener);
-    document.addEventListener('keydown', backspaceListener);
-    return () => {
-      document.removeEventListener('keydown', enterListener);
-      document.removeEventListener('keydown', backspaceListener);
-    };
-  }, [inputtedWords, currentWordIndex, currentLetterIndex]);
-
-  useEffect(() => {
     if (!isWin && currentWordIndex >= 6) {
       setIsLose(true);
     }
   }, [currentWordIndex]);
+
+  const handleEnter = () => {
+    const guess = inputtedWords[currentWordIndex]?.join('');
+
+    if (guess.length < 5) return;
+
+    if (!answers.has(guess)) {
+      alert(`No such word as ${guess}`);
+      return;
+    }
+
+    if (guess === answer) {
+      setIsWin(true);
+    }
+
+    setCurrentWordIndex((prev) => (prev <= 5 ? prev + 1 : prev));
+    setCurrentLetterIndex(0);
+  };
+
+  const handleBackspace = () => {
+    setInputtedWords((prev) =>
+      prev.map((word, wordIndex) =>
+        wordIndex === currentWordIndex
+          ? word.map((char, charIndex) =>
+              charIndex === currentLetterIndex - 1 ? '' : char,
+            )
+          : word,
+      ),
+    );
+    setCurrentLetterIndex((prev) => (prev <= 0 ? prev : prev - 1));
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (isWin) return;
+
+    if (e.key === 'Enter') {
+      handleEnter();
+      return;
+    }
+
+    if (e.key === 'Backspace') {
+      handleBackspace();
+      return;
+    }
+
+    if (isLetter(e.key)) {
+      const letterValue = e.key.toLowerCase();
+      inputLetter(letterValue);
+    }
+  };
 
   function inputLetter(letter: string) {
     setInputtedWords((prev) =>
@@ -99,12 +87,13 @@ function App() {
     setCurrentLetterIndex((prev) => (prev <= 4 ? prev + 1 : prev));
   }
 
+  const focusInput = () => {
+    inputRef.current?.focus();
+  };
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
-      <div
-        className="flex flex-col gap-2"
-        onClick={() => inputRef.current?.focus()}
-      >
+      <div className="flex flex-col gap-2" onClick={focusInput}>
         {Array.from({ length: 6 }).map((_, index) => (
           <WordRow
             key={index}
@@ -118,7 +107,13 @@ function App() {
         {isWin && <span>Yup! It's {answer}</span>}
         {isLose && <span>Sorry! It's {answer}</span>}
       </div>
-      <input ref={inputRef} className="absolute opacity-0" autoFocus />
+      <input
+        ref={inputRef}
+        onKeyDown={handleKeyDown}
+        onBlur={focusInput}
+        className="absolute opacity-0"
+        autoFocus
+      />
     </div>
   );
 }
