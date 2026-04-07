@@ -48,10 +48,6 @@ const Keyboard = ({ onLetter, onBackspace, onEnter }: KeyboardProps) => {
         action: () => onLetter('i'),
       },
       {
-        key: 'i',
-        action: () => onLetter('i'),
-      },
-      {
         key: 'o',
         action: () => onLetter('o'),
       },
@@ -102,7 +98,6 @@ const Keyboard = ({ onLetter, onBackspace, onEnter }: KeyboardProps) => {
       {
         key: '⌫',
         action: onBackspace,
-        className: 'w-22',
       },
       {
         key: 'z',
@@ -133,9 +128,8 @@ const Keyboard = ({ onLetter, onBackspace, onEnter }: KeyboardProps) => {
         action: () => onLetter('m'),
       },
       {
-        key: 'Enter',
+        key: '⏎',
         action: onEnter,
-        className: 'w-22',
       },
     ],
   ];
@@ -150,7 +144,7 @@ const Keyboard = ({ onLetter, onBackspace, onEnter }: KeyboardProps) => {
                 key={keyIndex}
                 onClick={action}
                 className={cn(
-                  'h-10 w-10 border-2 border-black bg-gray-300 text-2xl font-bold uppercase transition duration-200 hover:bg-gray-400 active:bg-gray-500',
+                  'h-10 w-7 border-2 border-black bg-gray-300 text-lg font-bold uppercase transition duration-200 hover:bg-gray-400 active:bg-gray-500 md:w-10 md:text-2xl',
                   className,
                 )}
               >
