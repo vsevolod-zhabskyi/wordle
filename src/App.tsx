@@ -3,6 +3,7 @@ import { isLetter } from './lib/utils.ts';
 import allAnswers from './answers.json';
 
 import WordRow from './components/WordRow.tsx';
+import Keyboard from './components/Keyboard.tsx';
 
 function App() {
   const [answers] = useState<Set<string>>(new Set(allAnswers));
@@ -103,16 +104,26 @@ function App() {
           />
         ))}
       </div>
+
       <div className="h-13 pt-3 text-4xl font-bold">
         {isWin && <span>Yup! It's {answer}</span>}
         {isLose && <span>Sorry! It's {answer}</span>}
       </div>
+
+      <Keyboard
+        onLetter={inputLetter}
+        onBackspace={handleBackspace}
+        onEnter={handleEnter}
+      />
+
       <input
         ref={inputRef}
         onKeyDown={handleKeyDown}
         onBlur={focusInput}
         className="absolute opacity-0"
         autoFocus
+        readOnly
+        inputMode="none"
       />
     </div>
   );
