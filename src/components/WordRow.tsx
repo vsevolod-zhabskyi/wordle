@@ -8,7 +8,7 @@ interface WordRowProps {
 
 function WordRow({ isPassed, answer, word }: WordRowProps) {
   return (
-    <div className="flex gap-2 p-1">
+    <div className="flex gap-2">
       {Array.from({ length: 5 }).map((_, index) => (
         <div
           key={index}
