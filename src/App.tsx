@@ -105,7 +105,7 @@ function App() {
         ))}
       </div>
 
-      <div className="h-13 pt-3 text-4xl font-bold">
+      <div className="h-15 pt-2 text-4xl font-bold">
         {isWin && <span>Yup! It's {answer}</span>}
         {isLose && <span>Sorry! It's {answer}</span>}
       </div>
