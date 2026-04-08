@@ -1,18 +1,40 @@
 import { cn } from '../lib/utils.ts';
+import type { IInputtedLetters } from '../lib/types.ts';
 
 interface KeyboardProps {
   onLetter: (letter: string) => void;
   onBackspace: () => void;
   onEnter: () => void;
+  inputtedLetters: IInputtedLetters;
+  isEnd: boolean;
 }
 
 interface Key {
-  key?: string;
+  key: string;
   action: () => void;
   className?: string;
 }
 
-const Keyboard = ({ onLetter, onBackspace, onEnter }: KeyboardProps) => {
+const Keyboard = ({
+  onLetter,
+  onBackspace,
+  onEnter,
+  inputtedLetters,
+  isEnd,
+}: KeyboardProps) => {
+  const getKeyClassName = (key: string) => {
+    if (inputtedLetters.wrong.has(key)) {
+      return 'bg-gray-400 hover:bg-gray-500 active:bg-gray-600 disabled:hover:bg-gray-400 disabled:active:bg-gray-400';
+    }
+    if (inputtedLetters.correct.has(key)) {
+      return 'bg-green-400 hover:bg-green-500 active:bg-green-600 disabled:hover:bg-green-400 disabled:active:bg-green-400';
+    }
+    if (inputtedLetters.mismatched.has(key)) {
+      return 'bg-yellow-400 hover:bg-yellow-500 active:bg-yellow-600 disabled:hover:bg-yellow-400 disabled:active:bg-yellow-400';
+    }
+    return '';
+  };
+
   const keys: Key[][] = [
     [
       {
@@ -143,9 +165,12 @@ const Keyboard = ({ onLetter, onBackspace, onEnter }: KeyboardProps) => {
               <button
                 key={keyIndex}
                 onClick={action}
+                disabled={isEnd}
                 className={cn(
-                  'h-10 w-[8vw] max-w-10 border-2 border-black bg-gray-300 text-[1rem] font-bold uppercase transition duration-200 hover:bg-gray-400 active:bg-gray-500 md:w-10 md:text-lg',
+                  'h-10 w-[8vw] max-w-10 cursor-pointer border-2 border-black bg-gray-300 text-[1rem] font-bold uppercase transition duration-200 hover:bg-gray-400 active:bg-gray-500 md:w-10 md:text-lg',
                   className,
+                  'disabled:cursor-default disabled:hover:bg-gray-300 disabled:active:bg-gray-300',
+                  getKeyClassName(key),
                 )}
               >
                 {key}

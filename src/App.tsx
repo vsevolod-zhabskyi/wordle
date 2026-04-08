@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { isLetter } from './lib/utils.ts';
+import type { IInputtedLetters } from './lib/types.ts';
+
 import allAnswers from './answers.json';
 
 import WordRow from './components/WordRow.tsx';
@@ -17,6 +19,11 @@ function App() {
   const [inputtedWords, setInputtedWords] = useState<string[][]>(
     Array.from({ length: 6 }, () => Array(5).fill('')),
   );
+  const [inputtedLetters, setInputtedLetters] = useState<IInputtedLetters>({
+    wrong: new Set(),
+    correct: new Set(),
+    mismatched: new Set(),
+  });
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -26,16 +33,38 @@ function App() {
   }, [currentWordIndex]);
 
   const handleEnter = () => {
-    const guess = inputtedWords[currentWordIndex]?.join('');
+    const answerSplit = answer.split('');
+    const guessSplit = inputtedWords[currentWordIndex];
+    const guessJoined = inputtedWords[currentWordIndex]?.join('');
 
-    if (guess.length < 5) return;
+    if (guessJoined.length < 5) return;
 
-    if (!answers.has(guess)) {
-      alert(`No such word as ${guess}`);
+    if (!answers.has(guessJoined)) {
+      alert(`No such word as ${guessJoined}`);
       return;
     }
 
-    if (guess === answer) {
+    setInputtedLetters((prev) => {
+      const newInputtedLetters = { ...prev };
+      for (let i = 0; i < guessSplit.length; i++) {
+        if (!answerSplit.includes(guessSplit[i])) {
+          newInputtedLetters.wrong.add(guessSplit[i]);
+        }
+        if (
+          answerSplit.includes(guessSplit[i]) &&
+          guessSplit[i] !== answerSplit[i]
+        ) {
+          newInputtedLetters.mismatched.add(guessSplit[i]);
+        }
+        if (guessSplit[i] === answerSplit[i]) {
+          newInputtedLetters.mismatched.delete(guessSplit[i]);
+          newInputtedLetters.correct.add(guessSplit[i]);
+        }
+      }
+      return newInputtedLetters;
+    });
+
+    if (guessJoined === answer) {
       setIsWin(true);
     }
 
@@ -76,6 +105,8 @@ function App() {
   };
 
   function inputLetter(letter: string) {
+    if (isWin) return;
+
     setInputtedWords((prev) =>
       prev.map((word, wordIndex) =>
         wordIndex === currentWordIndex
@@ -116,6 +147,8 @@ function App() {
         onLetter={inputLetter}
         onBackspace={handleBackspace}
         onEnter={handleEnter}
+        inputtedLetters={inputtedLetters}
+        isEnd={isWin || isLose}
       />
 
       <input
