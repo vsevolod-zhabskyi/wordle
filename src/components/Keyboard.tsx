@@ -135,16 +135,16 @@ const Keyboard = ({ onLetter, onBackspace, onEnter }: KeyboardProps) => {
   ];
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-1 md:gap-2">
       {keys.map((row, rowIndex) => (
-        <div key={rowIndex} className="flex justify-center gap-2">
+        <div key={rowIndex} className="flex justify-center gap-1 md:gap-2">
           {row.map(({ key, action, className }, keyIndex) => {
             return (
               <button
                 key={keyIndex}
                 onClick={action}
                 className={cn(
-                  'h-10 w-7 border-2 border-black bg-gray-300 text-lg font-bold uppercase transition duration-200 hover:bg-gray-400 active:bg-gray-500 md:w-10 md:text-2xl',
+                  'h-10 w-[8vw] max-w-10 border-2 border-black bg-gray-300 text-[1rem] font-bold uppercase transition duration-200 hover:bg-gray-400 active:bg-gray-500 md:w-10 md:text-lg',
                   className,
                 )}
               >
