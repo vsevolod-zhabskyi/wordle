@@ -4,9 +4,17 @@ interface WordRowProps {
   isPassed: boolean;
   answer: string;
   word: string[];
+  currentLetterIndex: number;
+  isCurrentRow: boolean;
 }
 
-function WordRow({ isPassed, answer, word }: WordRowProps) {
+function WordRow({
+  isPassed,
+  answer,
+  word,
+  currentLetterIndex,
+  isCurrentRow,
+}: WordRowProps) {
   return (
     <div className="flex gap-2">
       {Array.from({ length: 5 }).map((_, index) => (
@@ -15,6 +23,7 @@ function WordRow({ isPassed, answer, word }: WordRowProps) {
           className={cn(
             'flex h-10 w-10 items-center justify-center border-2 border-black text-center text-4xl uppercase transition duration-200',
             {
+              'border-3!': isCurrentRow && index === currentLetterIndex,
               'bg-gray-400!': isPassed,
               'bg-yellow-400!': isPassed && answer.includes(word[index]),
               'bg-green-400!':

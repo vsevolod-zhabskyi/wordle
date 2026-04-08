@@ -101,6 +101,8 @@ function App() {
             word={inputtedWords[index]}
             isPassed={index < currentWordIndex}
             answer={answer}
+            currentLetterIndex={currentLetterIndex}
+            isCurrentRow={currentWordIndex === index}
           />
         ))}
       </div>
