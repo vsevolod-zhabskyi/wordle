@@ -6,6 +6,7 @@ import allAnswers from './answers.json';
 
 import WordRow from './components/WordRow.tsx';
 import Keyboard from './components/Keyboard.tsx';
+import ThemeToggle from './components/ThemeToggle.tsx';
 
 function App() {
   const [answers] = useState<Set<string>>(new Set(allAnswers));
@@ -125,6 +126,9 @@ function App() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center dark:bg-neutral-900 dark:text-neutral-300">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <div className="flex flex-col gap-2" onClick={focusInput}>
         {Array.from({ length: 6 }).map((_, index) => (
           <WordRow
