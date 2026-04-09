@@ -24,7 +24,6 @@ function App() {
     correct: new Set(),
     mismatched: new Set(),
   });
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!isWin && currentWordIndex >= 6) {
@@ -132,16 +131,12 @@ function App() {
     setCurrentLetterIndex((prev) => (prev <= 4 ? prev + 1 : prev));
   }
 
-  const focusInput = () => {
-    inputRef.current?.focus();
-  };
-
   return (
     <div className="flex min-h-screen flex-col items-center justify-center dark:bg-neutral-900 dark:text-neutral-300">
       <div className="absolute top-4 right-4">
         <ThemeToggle />
       </div>
-      <div className="flex flex-col gap-2" onClick={focusInput}>
+      <div className="flex flex-col gap-2">
         {Array.from({ length: 6 }).map((_, index) => (
           <WordRow
             key={index}
