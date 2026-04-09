@@ -3,17 +3,17 @@ import { cn } from '../lib/utils.ts';
 interface WordRowProps {
   isPassed: boolean;
   answer: string;
-  word: string[];
+  guess: string[];
   currentLetterIndex: number;
-  isCurrentRow: boolean;
+  isCurrentGuess: boolean;
 }
 
 function WordRow({
   isPassed,
   answer,
-  word,
+  guess,
   currentLetterIndex,
-  isCurrentRow,
+  isCurrentGuess,
 }: WordRowProps) {
   return (
     <div className="flex gap-2">
@@ -23,21 +23,21 @@ function WordRow({
           className={cn(
             'flex h-10 w-10 items-center justify-center border-2 border-black text-center text-4xl uppercase transition duration-200',
             {
-              'border-3!': isCurrentRow && index === currentLetterIndex,
+              'border-3!': isCurrentGuess && index === currentLetterIndex,
               'bg-gray-400!': isPassed,
-              'bg-yellow-400!': isPassed && answer.includes(word[index]),
+              'bg-yellow-400!': isPassed && answer.includes(guess[index]),
               'bg-green-400!':
                 isPassed &&
                 (index ===
-                  answer.split('').findIndex((char) => char === word[index]) ||
+                  answer.split('').findIndex((char) => char === guess[index]) ||
                   index ===
                     answer
                       .split('')
-                      .findLastIndex((char) => char === word[index])),
+                      .findLastIndex((char) => char === guess[index])),
             },
           )}
         >
-          <span className="relative bottom-0.5">{word[index]}</span>
+          <span className="relative bottom-0.5">{guess[index]}</span>
         </div>
       ))}
     </div>

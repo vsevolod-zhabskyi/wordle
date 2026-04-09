@@ -1,11 +1,11 @@
 import { cn } from '../lib/utils.ts';
-import type { IInputtedLetters } from '../lib/types.ts';
+import type { LetterStatus } from '../lib/types.ts';
 
 interface KeyboardProps {
   onLetter: (letter: string) => void;
   onBackspace: () => void;
   onEnter: () => void;
-  inputtedLetters: IInputtedLetters;
+  letterStatus: LetterStatus;
   isEnd: boolean;
 }
 
@@ -19,17 +19,17 @@ const Keyboard = ({
   onLetter,
   onBackspace,
   onEnter,
-  inputtedLetters,
+  letterStatus,
   isEnd,
 }: KeyboardProps) => {
   const getKeyClassName = (key: string) => {
-    if (inputtedLetters.wrong.has(key)) {
+    if (letterStatus.wrong.has(key)) {
       return 'bg-gray-400 hover:bg-gray-500 active:bg-gray-600 disabled:hover:bg-gray-400 disabled:active:bg-gray-400';
     }
-    if (inputtedLetters.correct.has(key)) {
+    if (letterStatus.correct.has(key)) {
       return 'bg-green-400 hover:bg-green-500 active:bg-green-600 disabled:hover:bg-green-400 disabled:active:bg-green-400';
     }
-    if (inputtedLetters.mismatched.has(key)) {
+    if (letterStatus.mismatched.has(key)) {
       return 'bg-yellow-400 hover:bg-yellow-500 active:bg-yellow-600 disabled:hover:bg-yellow-400 disabled:active:bg-yellow-400';
     }
     return '';
