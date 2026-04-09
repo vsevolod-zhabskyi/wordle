@@ -134,6 +134,7 @@ function App() {
             answer={answer}
             currentLetterIndex={currentLetterIndex}
             isCurrentGuess={currentWordIndex === index}
+            isEnd={isWin || isLose}
           />
         ))}
       </div>

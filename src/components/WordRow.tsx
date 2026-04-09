@@ -6,6 +6,7 @@ interface WordRowProps {
   guess: string[];
   currentLetterIndex: number;
   isCurrentGuess: boolean;
+  isEnd: boolean;
 }
 
 function WordRow({
@@ -14,6 +15,7 @@ function WordRow({
   guess,
   currentLetterIndex,
   isCurrentGuess,
+  isEnd,
 }: WordRowProps) {
   return (
     <div className="flex gap-2">
@@ -23,7 +25,8 @@ function WordRow({
           className={cn(
             'flex h-10 w-10 items-center justify-center border-2 border-black text-center text-4xl uppercase transition duration-200',
             {
-              'border-3!': isCurrentGuess && index === currentLetterIndex,
+              'border-3!':
+                isCurrentGuess && !isEnd && index === currentLetterIndex,
               'bg-gray-400!': isPassed,
               'bg-yellow-400!': isPassed && answer.includes(guess[index]),
               'bg-green-400!':
