@@ -1,5 +1,6 @@
 import { cn } from '../lib/utils.ts';
 import type { LetterStatus } from '../lib/types.ts';
+import { type LucideIcon, Check, Undo2 } from 'lucide-react';
 
 interface KeyboardProps {
   onLetter: (letter: string) => void;
@@ -10,7 +11,8 @@ interface KeyboardProps {
 }
 
 interface Key {
-  key: string;
+  key?: string;
+  icon?: LucideIcon;
   action: () => void;
   className?: string;
 }
@@ -118,7 +120,7 @@ const Keyboard = ({
     ],
     [
       {
-        key: '⌫',
+        icon: Undo2,
         action: onBackspace,
       },
       {
@@ -150,7 +152,7 @@ const Keyboard = ({
         action: () => onLetter('m'),
       },
       {
-        key: '⏎',
+        icon: Check,
         action: onEnter,
       },
     ],
@@ -160,20 +162,22 @@ const Keyboard = ({
     <div className="flex flex-col items-center gap-1 md:gap-2">
       {keys.map((row, rowIndex) => (
         <div key={rowIndex} className="flex justify-center gap-1 md:gap-2">
-          {row.map(({ key, action, className }, keyIndex) => {
+          {row.map(({ key, icon, action, className }, keyIndex) => {
+            const Icon = icon;
+
             return (
               <button
                 key={keyIndex}
                 onClick={action}
                 disabled={isEnd}
                 className={cn(
-                  'h-10 w-[8vw] max-w-10 cursor-pointer border-2 border-black bg-gray-300 text-[1rem] font-bold uppercase transition duration-200 hover:bg-gray-400 active:bg-gray-500 md:w-10 md:text-lg',
+                  'flex h-10 w-[8vw] max-w-10 cursor-pointer items-center justify-center border-2 border-black bg-gray-300 p-0.5 text-[1rem] font-bold uppercase transition duration-200 hover:bg-gray-400 active:bg-gray-500 md:w-10 md:text-lg',
                   className,
                   'disabled:cursor-default disabled:hover:bg-gray-300 disabled:active:bg-gray-300',
-                  getKeyClassName(key),
+                  getKeyClassName(key || ''),
                 )}
               >
-                {key}
+                {key || (Icon && <Icon />)}
               </button>
             );
           })}
