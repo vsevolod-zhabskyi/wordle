@@ -124,7 +124,7 @@ function App() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
+    <div className="flex min-h-screen flex-col items-center justify-center dark:bg-neutral-900 dark:text-neutral-300">
       <div className="flex flex-col gap-2" onClick={focusInput}>
         {Array.from({ length: 6 }).map((_, index) => (
           <WordRow

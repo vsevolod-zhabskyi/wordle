@@ -23,13 +23,15 @@ function WordRow({
         <div
           key={index}
           className={cn(
-            'flex h-10 w-10 items-center justify-center border-2 border-black text-center text-4xl uppercase transition duration-200',
+            'flex h-10 w-10 items-center justify-center border-2 border-black text-center text-4xl uppercase transition duration-200 dark:border-neutral-300',
             {
+              'dark:border-none!': isPassed,
               'border-3!':
                 isCurrentGuess && !isEnd && index === currentLetterIndex,
-              'bg-gray-400!': isPassed,
-              'bg-yellow-400!': isPassed && answer.includes(guess[index]),
-              'bg-green-400!':
+              'bg-gray-400! dark:bg-stone-800!': isPassed,
+              'bg-yellow-400! dark:bg-yellow-600!':
+                isPassed && answer.includes(guess[index]),
+              'bg-green-400! dark:bg-green-600!':
                 isPassed &&
                 (index ===
                   answer.split('').findIndex((char) => char === guess[index]) ||
