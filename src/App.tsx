@@ -156,7 +156,7 @@ function App() {
         <ThemeToggle />
       </div>
 
-      <button onClick={restart} className="mb-8 cursor-pointer">
+      <button onClick={restart} className="mb-10 cursor-pointer">
         <RefreshCcw size={34} />
       </button>
 
@@ -174,7 +174,7 @@ function App() {
         ))}
       </div>
 
-      <div className="h-15 pt-2 text-4xl font-bold">
+      <div className="flex h-20 items-center justify-center py-3 text-4xl font-bold">
         {isWin && <span>Yup! It's {answer}</span>}
         {isLose && <span>Sorry! It's {answer}</span>}
       </div>
