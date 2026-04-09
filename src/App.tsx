@@ -108,6 +108,8 @@ function App() {
   function handleKeyDown(e: KeyboardEvent) {
     if (isWin || isLose) return;
 
+    if (e.ctrlKey || e.metaKey) return;
+
     if (e.code.startsWith('Key')) {
       const letter = e.code.replace('Key', '').toLowerCase();
       inputLetter(letter);
