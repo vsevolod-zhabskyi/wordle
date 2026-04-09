@@ -1,29 +1,38 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { LetterStatus } from './lib/types.ts';
 
 import allAnswers from './answers.json';
 
+import { RefreshCcw } from 'lucide-react';
 import WordRow from './components/WordRow.tsx';
 import Keyboard from './components/Keyboard.tsx';
 import ThemeToggle from './components/ThemeToggle.tsx';
 
+const getAnswer = () => {
+  return allAnswers[Math.floor(Math.random() * allAnswers.length)];
+};
+
+const getGuessesInitialState = () => {
+  return Array.from({ length: 6 }, () => Array(5).fill(''));
+};
+
+const getLetterStatusInitialState: () => LetterStatus = () => ({
+  wrong: new Set(),
+  correct: new Set(),
+  mismatched: new Set(),
+});
+
 function App() {
   const [answers] = useState<Set<string>>(new Set(allAnswers));
-  const [answer] = useState<string>(
-    allAnswers[Math.floor(Math.random() * allAnswers.length)],
-  );
+  const [answer, setAnswer] = useState<string>(getAnswer);
   const [isWin, setIsWin] = useState(false);
   const [isLose, setIsLose] = useState(false);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
-  const [guesses, setGuesses] = useState<string[][]>(
-    Array.from({ length: 6 }, () => Array(5).fill('')),
+  const [guesses, setGuesses] = useState<string[][]>(getGuessesInitialState);
+  const [letterStatus, setLetterStatus] = useState<LetterStatus>(
+    getLetterStatusInitialState,
   );
-  const [letterStatus, setLetterStatus] = useState<LetterStatus>({
-    wrong: new Set(),
-    correct: new Set(),
-    mismatched: new Set(),
-  });
 
   useEffect(() => {
     if (!isWin && currentWordIndex >= 6) {
@@ -131,11 +140,26 @@ function App() {
     setCurrentLetterIndex((prev) => (prev <= 4 ? prev + 1 : prev));
   }
 
+  const restart = () => {
+    setAnswer(getAnswer());
+    setGuesses(getGuessesInitialState());
+    setCurrentWordIndex(0);
+    setCurrentLetterIndex(0);
+    setIsWin(false);
+    setIsLose(false);
+    setLetterStatus(getLetterStatusInitialState());
+  };
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center dark:bg-neutral-900 dark:text-neutral-300">
       <div className="absolute top-4 right-4">
         <ThemeToggle />
       </div>
+
+      <button onClick={restart} className="mb-8 cursor-pointer">
+        <RefreshCcw size={34} />
+      </button>
+
       <div className="flex flex-col gap-2">
         {Array.from({ length: 6 }).map((_, index) => (
           <WordRow
