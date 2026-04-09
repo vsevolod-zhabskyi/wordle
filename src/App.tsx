@@ -86,8 +86,8 @@ function App() {
     setCurrentLetterIndex((prev) => (prev <= 0 ? prev : prev - 1));
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (isWin) return;
+  function handleKeyDown(e: KeyboardEvent) {
+    if (isWin || isLose) return;
 
     if (e.code.startsWith('Key')) {
       const letter = e.code.replace('Key', '').toLowerCase();
@@ -104,10 +104,10 @@ function App() {
       handleBackspace();
       return;
     }
-  };
+  }
 
   function inputLetter(letter: string) {
-    if (isWin) return;
+    if (isWin || isLose) return;
 
     setGuesses((prev) =>
       prev.map((word, wordIndex) =>
