@@ -159,9 +159,9 @@ const Keyboard = ({
   ];
 
   return (
-    <div className="flex flex-col items-center gap-1 md:gap-2">
+    <div className="flex flex-col items-center gap-0.5 md:gap-1">
       {keys.map((row, rowIndex) => (
-        <div key={rowIndex} className="flex justify-center gap-1 md:gap-2">
+        <div key={rowIndex} className="flex justify-center gap-0.5 md:gap-1">
           {row.map(({ key, icon, action, className }, keyIndex) => {
             const Icon = icon;
 
@@ -171,7 +171,7 @@ const Keyboard = ({
                 onClick={action}
                 disabled={isEnd}
                 className={cn(
-                  'flex h-10 w-[8vw] max-w-10 cursor-pointer items-center justify-center border-2 border-black bg-gray-300 p-0.5 text-[1rem] font-bold uppercase transition duration-200 hover:bg-gray-400 active:bg-gray-500 md:w-10 md:text-lg',
+                  'flex h-10 w-[8vw] max-w-10 cursor-pointer items-center justify-center border-2 border-black bg-gray-300 p-0.5 text-[1rem] font-bold uppercase transition duration-200 hover:bg-gray-400 active:bg-gray-500 md:h-12 md:w-12 md:max-w-12 md:text-xl',
                   className,
                   'disabled:cursor-default disabled:hover:bg-gray-300 disabled:active:bg-gray-300',
                   getKeyClassName(key || ''),
