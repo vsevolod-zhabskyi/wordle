@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { isLetter } from './lib/utils.ts';
+import { useEffect, useRef, useState } from 'react';
 import type { LetterStatus } from './lib/types.ts';
 
 import allAnswers from './answers.json';
@@ -32,6 +31,18 @@ function App() {
       setIsLose(true);
     }
   }, [currentWordIndex]);
+
+  useEffect(() => {
+    const listener = (e: KeyboardEvent) => {
+      handleKeyDown(e);
+    };
+
+    window.addEventListener('keydown', listener);
+
+    return () => {
+      window.removeEventListener('keydown', listener);
+    };
+  }, [isWin, isLose, currentWordIndex, currentLetterIndex, answer]);
 
   const handleEnter = () => {
     const answerSplit = answer.split('');
@@ -155,16 +166,6 @@ function App() {
         onEnter={handleEnter}
         letterStatus={letterStatus}
         isEnd={isWin || isLose}
-      />
-
-      <input
-        ref={inputRef}
-        onKeyDown={handleKeyDown}
-        onBlur={focusInput}
-        className="absolute opacity-0"
-        autoFocus
-        readOnly
-        inputMode="none"
       />
     </div>
   );
