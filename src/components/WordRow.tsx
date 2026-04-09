@@ -23,7 +23,7 @@ function WordRow({
         <div
           key={index}
           className={cn(
-            'flex h-10 w-10 items-center justify-center border-2 border-black text-center text-4xl uppercase transition duration-200 dark:border-neutral-300',
+            'flex h-10 w-10 items-center justify-center rounded-md border-2 border-black text-center text-3xl uppercase transition duration-200 dark:border-neutral-300',
             {
               'dark:border-none!': isPassed,
               'border-3!':
@@ -42,7 +42,7 @@ function WordRow({
             },
           )}
         >
-          <span className="relative bottom-0.5">{guess[index]}</span>
+          {guess[index]}
         </div>
       ))}
     </div>

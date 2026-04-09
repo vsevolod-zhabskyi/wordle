@@ -181,7 +181,7 @@ const Keyboard = ({
                 disabled={isEnd}
                 className={cn(
                   'flex h-10 w-[8vw] max-w-10 cursor-pointer items-center justify-center select-none',
-                  'border-2 border-black bg-gray-300 p-0.5 text-[1rem] font-bold uppercase transition duration-200',
+                  'rounded-sm border-2 border-black bg-gray-300 p-0.5 text-[1rem] font-bold uppercase transition duration-200',
                   'hover:bg-gray-400 active:bg-gray-500 disabled:cursor-default disabled:hover:bg-gray-300 disabled:active:bg-gray-300',
                   'dark:border-none dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:active:bg-neutral-900 dark:disabled:hover:bg-neutral-700 dark:disabled:active:bg-neutral-700',
                   'md:h-12 md:w-12 md:max-w-12 md:text-xl',
