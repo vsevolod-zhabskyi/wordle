@@ -126,12 +126,12 @@ const Keyboard = ({
         key: 'l',
         action: () => onLetter('l'),
       },
-    ],
-    [
       {
         icon: Check,
         action: onEnter,
       },
+    ],
+    [
       {
         key: 'z',
         action: () => onLetter('z'),
