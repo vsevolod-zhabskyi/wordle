@@ -120,8 +120,8 @@ const Keyboard = ({
     ],
     [
       {
-        icon: Undo2,
-        action: onBackspace,
+        icon: Check,
+        action: onEnter,
       },
       {
         key: 'z',
@@ -152,8 +152,8 @@ const Keyboard = ({
         action: () => onLetter('m'),
       },
       {
-        icon: Check,
-        action: onEnter,
+        icon: Undo2,
+        action: onBackspace,
       },
     ],
   ];
