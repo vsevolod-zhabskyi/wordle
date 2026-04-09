@@ -89,6 +89,12 @@ function App() {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (isWin) return;
 
+    if (e.code.startsWith('Key')) {
+      const letter = e.code.replace('Key', '').toLowerCase();
+      inputLetter(letter);
+      return;
+    }
+
     if (e.key === 'Enter') {
       handleEnter();
       return;
@@ -97,11 +103,6 @@ function App() {
     if (e.key === 'Backspace') {
       handleBackspace();
       return;
-    }
-
-    if (isLetter(e.key)) {
-      const letterValue = e.key.toLowerCase();
-      inputLetter(letterValue);
     }
   };
 
