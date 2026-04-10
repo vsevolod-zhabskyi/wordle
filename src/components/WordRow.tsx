@@ -17,34 +17,64 @@ function WordRow({
   isCurrentGuess,
   isEnd,
 }: WordRowProps) {
+  const passedLetterClassName = isPassed
+    ? getPassedLetterClassName()
+    : Array(5).fill('');
+
+  function getPassedLetterClassName() {
+    const answerSplit = answer.split('');
+    const wrongClassName = 'bg-gray-400! dark:bg-stone-800!';
+    const mismatchedClassName = 'bg-yellow-400! dark:bg-yellow-600!';
+    const correctClassName = 'bg-green-400! dark:bg-green-600!';
+    const classNames = Array(5).fill(wrongClassName);
+    const answerCount: Record<string, number> = {};
+    const guessCount: Record<string, number> = {};
+
+    answerSplit.forEach((char) => {
+      answerCount[char] = (answerCount[char] || 0) + 1;
+    });
+    // Filling classNames for correct chars
+    guess.forEach((char, index) => {
+      if (answerSplit[index] === char) {
+        guessCount[char] = (guessCount[char] || 0) + 1;
+        classNames[index] = correctClassName;
+      }
+    });
+    // Filling classNames for mismatched chars
+    guess.forEach((char, index) => {
+      if (
+        (answerCount[char] || 0) > 0 &&
+        char !== answer[index] &&
+        (guessCount[char] || 0) < answerCount[char]
+      ) {
+        guessCount[char] = (guessCount[char] || 0) + 1;
+        classNames[index] = mismatchedClassName;
+      }
+    });
+
+    return classNames;
+  }
+
   return (
     <div className="flex gap-2">
-      {Array.from({ length: 5 }).map((_, index) => (
-        <div
-          key={index}
-          className={cn(
-            'flex h-10 w-10 items-center justify-center rounded-md border-2 border-black text-center text-3xl uppercase transition duration-200 dark:border-neutral-300',
-            {
-              'dark:border-none!': isPassed,
-              'border-3!':
-                isCurrentGuess && !isEnd && index === currentLetterIndex,
-              'bg-gray-400! dark:bg-stone-800!': isPassed,
-              'bg-yellow-400! dark:bg-yellow-600!':
-                isPassed && answer.includes(guess[index]),
-              'bg-green-400! dark:bg-green-600!':
-                isPassed &&
-                (index ===
-                  answer.split('').findIndex((char) => char === guess[index]) ||
-                  index ===
-                    answer
-                      .split('')
-                      .findLastIndex((char) => char === guess[index])),
-            },
-          )}
-        >
-          {guess[index]}
-        </div>
-      ))}
+      {Array.from({ length: 5 }).map((_, index) => {
+        return (
+          <div
+            key={index}
+            className={cn(
+              'flex h-10 w-10 items-center justify-center rounded-md border-2 border-black text-center text-3xl uppercase transition duration-200 dark:border-neutral-300',
+              passedLetterClassName[index],
+              {
+                'dark:border-none!': isPassed,
+                'border-3!':
+                  isCurrentGuess && !isEnd && index === currentLetterIndex,
+              },
+            )}
+          >
+            {guess[index]}
+          </div>
+        );
+      })}
     </div>
   );
 }
