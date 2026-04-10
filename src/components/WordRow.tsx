@@ -10,6 +10,40 @@ interface WordRowProps {
   isEnd: boolean;
 }
 
+const wrongClassName = 'bg-gray-400! dark:bg-stone-800!';
+const mismatchedClassName = 'bg-yellow-400! dark:bg-yellow-600!';
+const correctClassName = 'bg-green-400! dark:bg-green-600!';
+
+function getPassedLetterClassName(guess: string[], answer: string[]) {
+  const classNames = Array(WORD_LENGTH).fill(wrongClassName);
+  const answerCount: Record<string, number> = {};
+  const guessCount: Record<string, number> = {};
+
+  answer.forEach((char) => {
+    answerCount[char] = (answerCount[char] || 0) + 1;
+  });
+  // Filling classNames for correct chars
+  guess.forEach((char, index) => {
+    if (answer[index] === char) {
+      guessCount[char] = (guessCount[char] || 0) + 1;
+      classNames[index] = correctClassName;
+    }
+  });
+  // Filling classNames for mismatched chars
+  guess.forEach((char, index) => {
+    if (
+      (answerCount[char] || 0) > 0 &&
+      char !== answer[index] &&
+      (guessCount[char] || 0) < answerCount[char]
+    ) {
+      guessCount[char] = (guessCount[char] || 0) + 1;
+      classNames[index] = mismatchedClassName;
+    }
+  });
+
+  return classNames;
+}
+
 function WordRow({
   isPassed,
   answer,
@@ -19,46 +53,14 @@ function WordRow({
   isEnd,
 }: WordRowProps) {
   const passedLetterClassName = isPassed
-    ? getPassedLetterClassName()
+    ? getPassedLetterClassName(guess, answer.split(''))
     : Array(WORD_LENGTH).fill('');
 
-  function getPassedLetterClassName() {
-    const answerSplit = answer.split('');
-    const wrongClassName = 'bg-gray-400! dark:bg-stone-800!';
-    const mismatchedClassName = 'bg-yellow-400! dark:bg-yellow-600!';
-    const correctClassName = 'bg-green-400! dark:bg-green-600!';
-    const classNames = Array(WORD_LENGTH).fill(wrongClassName);
-    const answerCount: Record<string, number> = {};
-    const guessCount: Record<string, number> = {};
-
-    answerSplit.forEach((char) => {
-      answerCount[char] = (answerCount[char] || 0) + 1;
-    });
-    // Filling classNames for correct chars
-    guess.forEach((char, index) => {
-      if (answerSplit[index] === char) {
-        guessCount[char] = (guessCount[char] || 0) + 1;
-        classNames[index] = correctClassName;
-      }
-    });
-    // Filling classNames for mismatched chars
-    guess.forEach((char, index) => {
-      if (
-        (answerCount[char] || 0) > 0 &&
-        char !== answer[index] &&
-        (guessCount[char] || 0) < answerCount[char]
-      ) {
-        guessCount[char] = (guessCount[char] || 0) + 1;
-        classNames[index] = mismatchedClassName;
-      }
-    });
-
-    return classNames;
-  }
+  const cells = Array.from({ length: WORD_LENGTH });
 
   return (
     <div className="flex gap-2">
-      {Array.from({ length: WORD_LENGTH }).map((_, index) => {
+      {cells.map((_, index) => {
         return (
           <div
             key={index}
