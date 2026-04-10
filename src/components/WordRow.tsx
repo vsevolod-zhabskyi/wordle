@@ -19,14 +19,14 @@ function WordRow({
 }: WordRowProps) {
   const passedLetterClassName = isPassed
     ? getPassedLetterClassName()
-    : Array(5).fill('');
+    : Array(WORD_LENGTH).fill('');
 
   function getPassedLetterClassName() {
     const answerSplit = answer.split('');
     const wrongClassName = 'bg-gray-400! dark:bg-stone-800!';
     const mismatchedClassName = 'bg-yellow-400! dark:bg-yellow-600!';
     const correctClassName = 'bg-green-400! dark:bg-green-600!';
-    const classNames = Array(5).fill(wrongClassName);
+    const classNames = Array(WORD_LENGTH).fill(wrongClassName);
     const answerCount: Record<string, number> = {};
     const guessCount: Record<string, number> = {};
 
@@ -57,7 +57,7 @@ function WordRow({
 
   return (
     <div className="flex gap-2">
-      {Array.from({ length: 5 }).map((_, index) => {
+      {Array.from({ length: WORD_LENGTH }).map((_, index) => {
         return (
           <div
             key={index}

@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { RefreshCcw } from 'lucide-react';
+
 import type { LetterStatus } from './lib/types.ts';
+import { MAX_GUESSES, WORD_LENGTH } from './lib/constants.ts';
 
 import allAnswers from './answers.json';
 
-import { RefreshCcw } from 'lucide-react';
 import WordRow from './components/WordRow.tsx';
 import Keyboard from './components/Keyboard.tsx';
 import ThemeToggle from './components/ThemeToggle.tsx';
@@ -13,7 +15,7 @@ const getAnswer = () => {
 };
 
 const getGuessesInitialState = () => {
-  return Array.from({ length: 6 }, () => Array(5).fill(''));
+  return Array.from({ length: MAX_GUESSES }, () => Array(WORD_LENGTH).fill(''));
 };
 
 const getLetterStatusInitialState: () => LetterStatus = () => ({
@@ -163,7 +165,7 @@ function App() {
       </button>
 
       <div className="flex flex-col gap-2">
-        {Array.from({ length: 6 }).map((_, index) => (
+        {Array.from({ length: MAX_GUESSES }).map((_, index) => (
           <WordRow
             key={index}
             guess={guesses[index]}
