@@ -65,7 +65,7 @@ function WordRow({
           <div
             key={index}
             className={cn(
-              'flex h-10 w-10 items-center justify-center rounded-md border-2 border-neutral-800 text-center text-3xl uppercase transition duration-200 dark:border-neutral-300',
+              'flex h-10 w-10 items-center justify-center rounded-md border-2 border-neutral-800 text-center text-3xl uppercase transition duration-200 dark:border-none dark:bg-neutral-700',
               passedLetterClassName[index],
               {
                 'dark:border-none!': isPassed,
