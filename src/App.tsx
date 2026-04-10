@@ -37,7 +37,7 @@ function App() {
   );
 
   useEffect(() => {
-    if (!isWin && currentWordIndex >= 6) {
+    if (!isWin && currentWordIndex >= MAX_GUESSES) {
       setIsLose(true);
     }
   }, [currentWordIndex]);
@@ -59,7 +59,7 @@ function App() {
     const guessSplit = guesses[currentWordIndex];
     const guessJoined = guesses[currentWordIndex]?.join('');
 
-    if (guessJoined.length < 5) return;
+    if (guessJoined.length < WORD_LENGTH) return;
 
     if (!answers.has(guessJoined)) {
       alert(`No such word as ${guessJoined}`);
@@ -90,7 +90,7 @@ function App() {
       setIsWin(true);
     }
 
-    setCurrentWordIndex((prev) => (prev <= 5 ? prev + 1 : prev));
+    setCurrentWordIndex((prev) => (prev <= MAX_GUESSES - 1 ? prev + 1 : prev));
     setCurrentLetterIndex(0);
   };
 
@@ -141,7 +141,9 @@ function App() {
           : word,
       ),
     );
-    setCurrentLetterIndex((prev) => (prev <= 4 ? prev + 1 : prev));
+    setCurrentLetterIndex((prev) =>
+      prev <= WORD_LENGTH - 1 ? prev + 1 : prev,
+    );
   }
 
   const restart = () => {
