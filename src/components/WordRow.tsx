@@ -1,4 +1,5 @@
 import { cn } from '../lib/utils.ts';
+import { WORD_LENGTH } from '../lib/constants.ts';
 
 interface WordRowProps {
   isPassed: boolean;
