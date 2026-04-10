@@ -1,5 +1,5 @@
-import { cn } from '../lib/utils.ts';
-import type { LetterStatus } from '../lib/types.ts';
+import { cn } from '@/lib/utils.ts';
+import type { LetterStatus } from '@/lib/types.ts';
 import { type LucideIcon, Check, Undo2 } from 'lucide-react';
 
 interface KeyboardProps {

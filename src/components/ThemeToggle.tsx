@@ -1,4 +1,4 @@
-import { useTheme } from '../hooks/useTheme.ts';
+import { useTheme } from '@/hooks/useTheme.ts';
 import { MoonIcon, SunIcon } from 'lucide-react';
 
 interface ThemeToggleProps {
