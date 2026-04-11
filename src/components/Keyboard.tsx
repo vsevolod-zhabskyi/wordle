@@ -25,19 +25,19 @@ const Keyboard = ({
   isEnd,
 }: KeyboardProps) => {
   const getKeyClassName = (key: string) => {
-    if (letterStatus.wrong.has(key)) {
+    if (key in letterStatus.wrong) {
       return cn(
         'bg-gray-400 hover:bg-gray-500 active:bg-gray-600 disabled:hover:bg-gray-400 disabled:active:bg-gray-400',
         'dark:bg-stone-800 dark:hover:bg-stone-900 dark:active:bg-neutral-900 dark:disabled:hover:bg-stone-800 dark:disabled:active:bg-stone-800',
       );
     }
-    if (letterStatus.correct.has(key)) {
+    if (key in letterStatus.correct) {
       return cn(
         'bg-green-400 hover:bg-green-500 active:bg-green-600 disabled:hover:bg-green-400 disabled:active:bg-green-400',
         'dark:bg-green-600 dark:hover:bg-green-700 dark:active:bg-green-800 dark:disabled:hover:bg-green-600 dark:disabled:active:bg-green-600',
       );
     }
-    if (letterStatus.mismatched.has(key)) {
+    if (key in letterStatus.mismatched) {
       return cn(
         'bg-yellow-400 hover:bg-yellow-500 active:bg-yellow-600 disabled:hover:bg-yellow-400 disabled:active:bg-yellow-400',
         'dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:active:bg-yellow-800 dark:disabled:hover:bg-yellow-600 dark:disabled:active:bg-yellow-600',

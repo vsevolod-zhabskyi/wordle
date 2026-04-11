@@ -19,9 +19,9 @@ const getGuessesInitialState = () => {
 };
 
 const getLetterStatusInitialState: () => LetterStatus = () => ({
-  wrong: new Set(),
-  correct: new Set(),
-  mismatched: new Set(),
+  wrong: {},
+  correct: {},
+  mismatched: {},
 });
 
 function App() {
@@ -67,20 +67,22 @@ function App() {
     }
 
     setLetterStatus((prev) => {
-      const newLetterStatus = { ...prev };
+      const newLetterStatus = structuredClone(prev);
+
       for (let i = 0; i < guessSplit.length; i++) {
-        if (!answerSplit.includes(guessSplit[i])) {
-          newLetterStatus.wrong.add(guessSplit[i]);
+        const guessChar = guessSplit[i];
+        const answerChar = answerSplit[i];
+        const isInAnswer = answerSplit.includes(guessChar);
+
+        if (!isInAnswer) {
+          newLetterStatus.wrong[guessChar] = true;
         }
-        if (
-          answerSplit.includes(guessSplit[i]) &&
-          guessSplit[i] !== answerSplit[i]
-        ) {
-          newLetterStatus.mismatched.add(guessSplit[i]);
+        if (isInAnswer && guessChar !== answerChar) {
+          newLetterStatus.mismatched[guessChar] = true;
         }
-        if (guessSplit[i] === answerSplit[i]) {
-          newLetterStatus.mismatched.delete(guessSplit[i]);
-          newLetterStatus.correct.add(guessSplit[i]);
+        if (guessChar === answerChar) {
+          delete newLetterStatus.mismatched[guessChar];
+          newLetterStatus.correct[guessChar] = true;
         }
       }
       return newLetterStatus;

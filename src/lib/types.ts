@@ -1,5 +1,5 @@
 export interface LetterStatus {
-  wrong: Set<string>;
-  correct: Set<string>;
-  mismatched: Set<string>;
+  wrong: Record<string, true>;
+  correct: Record<string, true>;
+  mismatched: Record<string, true>;
 }
