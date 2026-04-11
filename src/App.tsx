@@ -27,11 +27,9 @@ const getLetterStatusInitialState: () => LetterStatus = () => ({
 
 function App() {
   const [answers] = useState<Set<string>>(new Set(allAnswers));
-  const [answer, setAnswer] = usePersistentState<string>('answer', getAnswer, {
+  const [answer, setAnswer] = usePersistentState<string>('answer', 'horny', {
     encrypt: true,
   });
-  const [isWin, setIsWin] = usePersistentState('isWin', false);
-  const [isLose, setIsLose] = usePersistentState('isLose', false);
   const [currentWordIndex, setCurrentWordIndex] = usePersistentState(
     'currentWordIndex',
     0,
@@ -48,6 +46,16 @@ function App() {
     'letterStatus',
     getLetterStatusInitialState,
   );
+  const [isWin, setIsWin] = useState(() => {
+    return (
+      currentWordIndex > 0 && guesses[currentWordIndex - 1].join('') === answer
+    );
+  });
+  const [isLose, setIsLose] = useState(() => {
+    return (
+      currentWordIndex > 0 && guesses[currentWordIndex - 1].join('') !== answer
+    );
+  });
 
   useEffect(() => {
     if (!isWin && currentWordIndex >= MAX_GUESSES) {
