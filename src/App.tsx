@@ -8,7 +8,7 @@ import { toast } from '@/lib/toast.ts';
 
 import allAnswers from '@/answers.json';
 
-import { ToasterProvider } from '@/providers/ToasterProvider.tsx';
+import ToasterProvider from '@/providers/ToasterProvider.tsx';
 import WordRow from '@/components/WordRow.tsx';
 import Keyboard from '@/components/Keyboard.tsx';
 import ThemeToggle from '@/components/ThemeToggle.tsx';

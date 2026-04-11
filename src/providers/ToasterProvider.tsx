@@ -1,6 +1,6 @@
 import { Toaster } from 'sonner';
 
-export const ToasterProvider = () => {
+function ToasterProvider() {
   return (
     <Toaster
       toastOptions={{
@@ -9,4 +9,6 @@ export const ToasterProvider = () => {
       }}
     />
   );
-};
+}
+
+export default ToasterProvider;
