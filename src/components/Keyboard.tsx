@@ -127,8 +127,8 @@ const Keyboard = ({
         action: () => onLetter('l'),
       },
       {
-        icon: Check,
-        action: onEnter,
+        icon: Undo2,
+        action: onBackspace,
       },
     ],
     [
@@ -161,8 +161,8 @@ const Keyboard = ({
         action: () => onLetter('m'),
       },
       {
-        icon: Undo2,
-        action: onBackspace,
+        icon: Check,
+        action: onEnter,
       },
     ],
   ];
