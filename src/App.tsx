@@ -3,6 +3,7 @@ import { RefreshCcw, Settings } from 'lucide-react';
 
 import type { LetterStatus } from '@/lib/types.ts';
 import { MAX_GUESSES, WORD_LENGTH } from '@/lib/constants.ts';
+import { usePersistentState } from '@/hooks/usePersistentState.ts';
 
 import allAnswers from '@/answers.json';
 
@@ -14,7 +15,7 @@ const getAnswer = () => {
   return allAnswers[Math.floor(Math.random() * allAnswers.length)];
 };
 
-const getGuessesInitialState = () => {
+const getGuessesInitialState: () => string[][] = () => {
   return Array.from({ length: MAX_GUESSES }, () => Array(WORD_LENGTH).fill(''));
 };
 
@@ -26,13 +27,25 @@ const getLetterStatusInitialState: () => LetterStatus = () => ({
 
 function App() {
   const [answers] = useState<Set<string>>(new Set(allAnswers));
-  const [answer, setAnswer] = useState<string>(getAnswer);
-  const [isWin, setIsWin] = useState(false);
-  const [isLose, setIsLose] = useState(false);
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
-  const [guesses, setGuesses] = useState<string[][]>(getGuessesInitialState);
-  const [letterStatus, setLetterStatus] = useState<LetterStatus>(
+  const [answer, setAnswer] = usePersistentState<string>('answer', getAnswer, {
+    encrypt: true,
+  });
+  const [isWin, setIsWin] = usePersistentState('isWin', false);
+  const [isLose, setIsLose] = usePersistentState('isLose', false);
+  const [currentWordIndex, setCurrentWordIndex] = usePersistentState(
+    'currentWordIndex',
+    0,
+  );
+  const [currentLetterIndex, setCurrentLetterIndex] = usePersistentState(
+    'currentLetterIndex',
+    0,
+  );
+  const [guesses, setGuesses] = usePersistentState<string[][]>(
+    'guesses',
+    getGuessesInitialState,
+  );
+  const [letterStatus, setLetterStatus] = usePersistentState<LetterStatus>(
+    'letterStatus',
     getLetterStatusInitialState,
   );
 
@@ -164,9 +177,14 @@ function App() {
         <ThemeToggle />
       </div>
 
-      <button onClick={restart} className="mb-10 cursor-pointer">
-        <RefreshCcw size={34} />
-      </button>
+      <div className="mb-10 flex w-58 justify-around">
+        <button className="cursor-pointer">
+          <Settings size={34} />
+        </button>
+        <button onClick={restart} className="cursor-pointer">
+          <RefreshCcw size={34} />
+        </button>
+      </div>
 
       <div className="flex flex-col gap-2">
         {Array.from({ length: MAX_GUESSES }).map((_, index) => (
