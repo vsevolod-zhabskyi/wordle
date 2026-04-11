@@ -4,9 +4,11 @@ import { RefreshCcw } from 'lucide-react';
 import type { LetterStatus } from '@/lib/types.ts';
 import { MAX_GUESSES, WORD_LENGTH } from '@/lib/constants.ts';
 import { usePersistentState } from '@/hooks/usePersistentState.ts';
+import { toast } from '@/lib/toast.ts';
 
 import allAnswers from '@/answers.json';
 
+import { ToasterProvider } from '@/providers/ToasterProvider.tsx';
 import WordRow from '@/components/WordRow.tsx';
 import Keyboard from '@/components/Keyboard.tsx';
 import ThemeToggle from '@/components/ThemeToggle.tsx';
@@ -83,7 +85,7 @@ function App() {
     if (guessJoined.length < WORD_LENGTH) return;
 
     if (!answers.has(guessJoined)) {
-      alert(`No such word as ${guessJoined}`);
+      toast(`No such word in the dictionary :(`);
       return;
     }
 
@@ -180,47 +182,51 @@ function App() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-neutral-100 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-300">
-      <div className="absolute top-4 right-4">
-        <ThemeToggle />
-      </div>
+    <>
+      <ToasterProvider />
 
-      <div className="mb-10 flex w-58 justify-around">
-        {/*<button className="cursor-pointer">*/}
-        {/*  <Settings size={34} />*/}
-        {/*</button>*/}
-        <button onClick={restart} className="cursor-pointer">
-          <RefreshCcw size={34} />
-        </button>
-      </div>
+      <div className="flex min-h-screen flex-col items-center justify-center bg-neutral-100 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-300">
+        <div className="absolute top-4 right-4">
+          <ThemeToggle />
+        </div>
 
-      <div className="flex flex-col gap-2">
-        {Array.from({ length: MAX_GUESSES }).map((_, index) => (
-          <WordRow
-            key={index}
-            guess={guesses[index]}
-            isPassed={index < currentWordIndex}
-            answer={answer}
-            currentLetterIndex={currentLetterIndex}
-            isCurrentGuess={currentWordIndex === index}
-            isEnd={isWin || isLose}
-          />
-        ))}
-      </div>
+        <div className="mb-10 flex w-58 justify-around">
+          {/*<button className="cursor-pointer">*/}
+          {/*  <Settings size={34} />*/}
+          {/*</button>*/}
+          <button onClick={restart} className="cursor-pointer">
+            <RefreshCcw size={34} />
+          </button>
+        </div>
 
-      <div className="flex h-20 items-center justify-center py-3 text-4xl font-bold">
-        {isWin && <span>Yup! It's {answer}</span>}
-        {isLose && <span>Sorry! It's {answer}</span>}
-      </div>
+        <div className="flex flex-col gap-2">
+          {Array.from({ length: MAX_GUESSES }).map((_, index) => (
+            <WordRow
+              key={index}
+              guess={guesses[index]}
+              isPassed={index < currentWordIndex}
+              answer={answer}
+              currentLetterIndex={currentLetterIndex}
+              isCurrentGuess={currentWordIndex === index}
+              isEnd={isWin || isLose}
+            />
+          ))}
+        </div>
 
-      <Keyboard
-        onLetter={inputLetter}
-        onBackspace={handleBackspace}
-        onEnter={handleEnter}
-        letterStatus={letterStatus}
-        isEnd={isWin || isLose}
-      />
-    </div>
+        <div className="flex h-20 items-center justify-center py-3 text-4xl font-bold">
+          {isWin && <span>Yup! It's {answer}</span>}
+          {isLose && <span>Sorry! It's {answer}</span>}
+        </div>
+
+        <Keyboard
+          onLetter={inputLetter}
+          onBackspace={handleBackspace}
+          onEnter={handleEnter}
+          letterStatus={letterStatus}
+          isEnd={isWin || isLose}
+        />
+      </div>
+    </>
   );
 }
 
