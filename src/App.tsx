@@ -27,7 +27,7 @@ const getLetterStatusInitialState: () => LetterStatus = () => ({
 
 function App() {
   const [answers] = useState<Set<string>>(new Set(allAnswers));
-  const [answer, setAnswer] = usePersistentState<string>('answer', 'horny', {
+  const [answer, setAnswer] = usePersistentState<string>('answer', getAnswer, {
     encrypt: true,
   });
   const [currentWordIndex, setCurrentWordIndex] = usePersistentState(
