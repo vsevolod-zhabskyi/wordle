@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RefreshCcw, Settings } from 'lucide-react';
+import { RefreshCcw } from 'lucide-react';
 
 import type { LetterStatus } from '@/lib/types.ts';
 import { MAX_GUESSES, WORD_LENGTH } from '@/lib/constants.ts';
