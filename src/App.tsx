@@ -48,15 +48,11 @@ function App() {
     'letterStatus',
     getLetterStatusInitialState,
   );
-  const [isWin, setIsWin] = useState(() => {
-    return (
-      currentWordIndex > 0 && guesses[currentWordIndex - 1].join('') === answer
-    );
+  const [isWin, setIsWin] = usePersistentState('isWin', false, {
+    encrypt: true,
   });
-  const [isLose, setIsLose] = useState(() => {
-    return (
-      currentWordIndex > 0 && guesses[currentWordIndex - 1].join('') !== answer
-    );
+  const [isLose, setIsLose] = usePersistentState('isLose', false, {
+    encrypt: true,
   });
 
   useEffect(() => {
@@ -185,7 +181,7 @@ function App() {
     <>
       <ToasterProvider />
 
-      <div className="flex min-h-screen flex-col items-center justify-center bg-neutral-100 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-300">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-neutral-100 p-6 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-300">
         <div className="absolute top-4 right-4">
           <ThemeToggle />
         </div>
