@@ -186,9 +186,9 @@ function App() {
       </div>
 
       <div className="mb-10 flex w-58 justify-around">
-        <button className="cursor-pointer">
-          <Settings size={34} />
-        </button>
+        {/*<button className="cursor-pointer">*/}
+        {/*  <Settings size={34} />*/}
+        {/*</button>*/}
         <button onClick={restart} className="cursor-pointer">
           <RefreshCcw size={34} />
         </button>
