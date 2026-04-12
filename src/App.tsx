@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { RefreshCcw } from 'lucide-react';
+import { RefreshCcw, WandSparkles } from 'lucide-react';
 
+import { getHint } from '@/services/hintService.ts';
 import type { LetterStatus } from '@/lib/types.ts';
 import { MAX_GUESSES, WORD_LENGTH } from '@/lib/constants.ts';
 import { usePersistentState } from '@/hooks/usePersistentState.ts';
-import { toast } from '@/lib/toast.ts';
+import { toast, toastPromise } from '@/lib/toast.ts';
 
 import allAnswers from '@/answers.json';
 
@@ -54,6 +55,7 @@ function App() {
   const [isLose, setIsLose] = usePersistentState('isLose', false, {
     encrypt: true,
   });
+  const [hint, setHint] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isWin && currentWordIndex >= MAX_GUESSES) {
@@ -175,6 +177,24 @@ function App() {
     setIsWin(false);
     setIsLose(false);
     setLetterStatus(getLetterStatusInitialState());
+    setHint(null);
+  };
+
+  const handleHint = () => {
+    if (hint) {
+      toast(hint);
+      return;
+    }
+
+    toastPromise(getHint(answer), {
+      loading: 'Thinking...',
+      success: (data: string) => {
+        setHint(data);
+        return `${data}`;
+      },
+      error: 'Try kitty :)',
+      duration: 5000,
+    });
   };
 
   return (
@@ -186,12 +206,15 @@ function App() {
           <ThemeToggle />
         </div>
 
-        <div className="mb-10 flex w-58 justify-around">
+        <div className="mb-10 flex w-58 items-center justify-around gap-2">
           {/*<button className="cursor-pointer">*/}
           {/*  <Settings size={34} />*/}
           {/*</button>*/}
           <button onClick={restart} className="cursor-pointer">
             <RefreshCcw size={34} />
+          </button>
+          <button onClick={handleHint} className="cursor-pointer">
+            <WandSparkles size={32} />
           </button>
         </div>
 
