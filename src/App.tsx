@@ -56,6 +56,7 @@ function App() {
     encrypt: true,
   });
   const [hint, setHint] = useState<string | null>(null);
+  const [isHintLoading, setIsHintLoading] = useState(false);
 
   useEffect(() => {
     if (!isWin && currentWordIndex >= MAX_GUESSES) {
@@ -181,15 +182,20 @@ function App() {
   };
 
   const handleHint = () => {
+    if (isHintLoading) return;
+
     if (hint) {
       toast(hint);
       return;
     }
 
+    setIsHintLoading(true);
+
     toastPromise(getHint(answer), {
       loading: 'Thinking...',
       success: (data: string) => {
         setHint(data);
+        setIsHintLoading(false);
         return `${data}`;
       },
       error: 'Try kitty :)',
