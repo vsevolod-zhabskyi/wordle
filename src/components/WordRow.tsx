@@ -11,7 +11,7 @@ interface WordRowProps {
   isEnd: boolean;
 }
 
-const wrongClassName = 'bg-gray-400! dark:bg-stone-800!';
+const wrongClassName = 'bg-gray-400/90! dark:bg-stone-800!';
 const mismatchedClassName = 'bg-yellow-400! dark:bg-yellow-600!';
 const correctClassName = 'bg-green-400! dark:bg-green-600!';
 

@@ -27,7 +27,7 @@ const Keyboard = ({
   const getKeyClassName = (key: string) => {
     if (key in letterStatus.wrong) {
       return cn(
-        'bg-gray-400 hover:bg-gray-500 active:bg-gray-600 disabled:hover:bg-gray-400 disabled:active:bg-gray-400',
+        'bg-gray-400/90 hover:bg-gray-500/90 active:bg-gray-600/90 disabled:hover:bg-gray-400/90 disabled:active:bg-gray-400/90',
         'dark:bg-stone-800 dark:hover:bg-stone-900 dark:active:bg-neutral-900 dark:disabled:hover:bg-stone-800 dark:disabled:active:bg-stone-800',
       );
     }
