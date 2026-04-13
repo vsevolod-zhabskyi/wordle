@@ -8,6 +8,20 @@ const config: Config = {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
+      keyframes: {
+        fadeIn: {
+          from: { opacity: 0 },
+          to: { opacity: 1 },
+        },
+        fadeOut: {
+          from: { opacity: 1 },
+          to: { opacity: 0 },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn 65ms ease-out',
+        fadeOut: 'fadeOut 65ms ease-in',
+      },
     },
   },
   plugins: [],
