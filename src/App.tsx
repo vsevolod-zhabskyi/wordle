@@ -6,7 +6,7 @@ import { MAX_GUESSES, WORD_LENGTH } from '@/lib/constants.ts';
 import { usePersistentState } from '@/hooks/usePersistentState.ts';
 import { toast } from '@/lib/toast.ts';
 
-import allAnswers from '@/answers.json';
+import allAnswers from '@/5_letter_words.json';
 
 import ToasterProvider from '@/providers/ToasterProvider.tsx';
 import WordRow from '@/components/WordRow.tsx';
