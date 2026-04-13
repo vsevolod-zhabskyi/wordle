@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { RefreshCcw, WandSparkles } from 'lucide-react';
+import { RefreshCcw } from 'lucide-react';
 
-import { getHint } from '@/services/hintService.ts';
 import type { LetterStatus } from '@/lib/types.ts';
 import { MAX_GUESSES, WORD_LENGTH } from '@/lib/constants.ts';
 import { usePersistentState } from '@/hooks/usePersistentState.ts';
-import { toast, toastPromise } from '@/lib/toast.ts';
+import { toast } from '@/lib/toast.ts';
 
 import allAnswers from '@/answers.json';
 
@@ -13,6 +12,7 @@ import ToasterProvider from '@/providers/ToasterProvider.tsx';
 import WordRow from '@/components/WordRow.tsx';
 import Keyboard from '@/components/Keyboard.tsx';
 import ThemeToggle from '@/components/ThemeToggle.tsx';
+import HintButton from '@/components/HintButton.tsx';
 
 const getAnswer = () => {
   return allAnswers[Math.floor(Math.random() * allAnswers.length)];
@@ -56,7 +56,6 @@ function App() {
     encrypt: true,
   });
   const [hint, setHint] = useState<string | null>(null);
-  const [isHintLoading, setIsHintLoading] = useState(false);
 
   useEffect(() => {
     if (!isWin && currentWordIndex >= MAX_GUESSES) {
@@ -181,28 +180,6 @@ function App() {
     setHint(null);
   };
 
-  const handleHint = () => {
-    if (isHintLoading) return;
-
-    if (hint) {
-      toast(hint);
-      return;
-    }
-
-    setIsHintLoading(true);
-
-    toastPromise(getHint(answer), {
-      loading: 'Thinking...',
-      success: (data: string) => {
-        setHint(data);
-        setIsHintLoading(false);
-        return `${data}`;
-      },
-      error: 'Try kitty :)',
-      duration: 5000,
-    });
-  };
-
   return (
     <>
       <ToasterProvider />
@@ -219,9 +196,7 @@ function App() {
           <button onClick={restart} className="cursor-pointer">
             <RefreshCcw size={34} />
           </button>
-          <button onClick={handleHint} className="cursor-pointer">
-            <WandSparkles size={32} />
-          </button>
+          <HintButton answer={answer} hint={hint} setHint={setHint} />
         </div>
 
         <div className="flex flex-col gap-2">
