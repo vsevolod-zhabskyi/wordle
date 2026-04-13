@@ -1,7 +1,8 @@
 import { cn } from '@/lib/utils.ts';
-import { WORD_LENGTH } from '@/lib/constants.ts';
+import type { WordLength } from '@/lib/types.ts';
 
 interface WordRowProps {
+  wordLength: WordLength;
   isPassed: boolean;
   answer: string;
   guess: string[];
@@ -14,8 +15,12 @@ const wrongClassName = 'bg-gray-400! dark:bg-stone-800!';
 const mismatchedClassName = 'bg-yellow-400! dark:bg-yellow-600!';
 const correctClassName = 'bg-green-400! dark:bg-green-600!';
 
-function getPassedLetterClassName(guess: string[], answer: string[]) {
-  const classNames = Array(WORD_LENGTH).fill(wrongClassName);
+function getPassedLetterClassName(
+  guess: string[],
+  answer: string[],
+  wordLength: WordLength,
+) {
+  const classNames = Array(wordLength).fill(wrongClassName);
   const answerCount: Record<string, number> = {};
   const guessCount: Record<string, number> = {};
 
@@ -45,6 +50,7 @@ function getPassedLetterClassName(guess: string[], answer: string[]) {
 }
 
 function WordRow({
+  wordLength,
   isPassed,
   answer,
   guess,
@@ -53,10 +59,10 @@ function WordRow({
   isEnd,
 }: WordRowProps) {
   const passedLetterClassName = isPassed
-    ? getPassedLetterClassName(guess, answer.split(''))
-    : Array(WORD_LENGTH).fill('');
+    ? getPassedLetterClassName(guess, answer.split(''), wordLength)
+    : Array(wordLength).fill('');
 
-  const cells = Array.from({ length: WORD_LENGTH });
+  const cells = Array.from({ length: wordLength });
 
   return (
     <div className="flex gap-2">

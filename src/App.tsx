@@ -1,25 +1,26 @@
 import { useEffect, useState } from 'react';
 import { RefreshCcw } from 'lucide-react';
 
-import type { LetterStatus } from '@/lib/types.ts';
-import { MAX_GUESSES, WORD_LENGTH } from '@/lib/constants.ts';
+import type { LetterStatus, WordLength } from '@/lib/types.ts';
+import { MAX_GUESSES, WORD_LISTS } from '@/lib/constants.ts';
 import { usePersistentState } from '@/hooks/usePersistentState.ts';
 import { toast } from '@/lib/toast.ts';
-
-import allAnswers from '@/5_letter_words.json';
 
 import ToasterProvider from '@/providers/ToasterProvider.tsx';
 import WordRow from '@/components/WordRow.tsx';
 import Keyboard from '@/components/Keyboard.tsx';
 import ThemeToggle from '@/components/ThemeToggle.tsx';
 import HintButton from '@/components/HintButton.tsx';
+import SettingsModal from '@/components/SettingsModal.tsx';
 
-const getAnswer = () => {
-  return allAnswers[Math.floor(Math.random() * allAnswers.length)];
+const getAnswer = (wordList: Array<string>) => {
+  return wordList[Math.floor(Math.random() * wordList.length)];
 };
 
-const getGuessesInitialState: () => string[][] = () => {
-  return Array.from({ length: MAX_GUESSES }, () => Array(WORD_LENGTH).fill(''));
+const getGuessesInitialState: (wordLength: WordLength) => string[][] = (
+  wordLength,
+) => {
+  return Array.from({ length: MAX_GUESSES }, () => Array(wordLength).fill(''));
 };
 
 const getLetterStatusInitialState: () => LetterStatus = () => ({
@@ -29,10 +30,22 @@ const getLetterStatusInitialState: () => LetterStatus = () => ({
 });
 
 function App() {
-  const [answers] = useState<Set<string>>(new Set(allAnswers));
-  const [answer, setAnswer] = usePersistentState<string>('answer', getAnswer, {
-    encrypt: true,
-  });
+  const [wordLength, setWordLength] = usePersistentState<WordLength>(
+    'wordLength',
+    5,
+    {
+      encrypt: true,
+    },
+  );
+  const answersSet = WORD_LISTS[wordLength].set;
+  const answersList = WORD_LISTS[wordLength].list;
+  const [answer, setAnswer] = usePersistentState<string>(
+    'answer',
+    () => getAnswer(answersList),
+    {
+      encrypt: true,
+    },
+  );
   const [currentWordIndex, setCurrentWordIndex] = usePersistentState(
     'currentWordIndex',
     0,
@@ -41,9 +54,8 @@ function App() {
     'currentLetterIndex',
     0,
   );
-  const [guesses, setGuesses] = usePersistentState<string[][]>(
-    'guesses',
-    getGuessesInitialState,
+  const [guesses, setGuesses] = usePersistentState<string[][]>('guesses', () =>
+    getGuessesInitialState(wordLength),
   );
   const [letterStatus, setLetterStatus] = usePersistentState<LetterStatus>(
     'letterStatus',
@@ -56,6 +68,11 @@ function App() {
     encrypt: true,
   });
   const [hint, setHint] = useState<string | null>(null);
+
+  useEffect(() => {
+    setAnswer(getAnswer(answersList));
+    restart();
+  }, [wordLength]);
 
   useEffect(() => {
     if (!isWin && currentWordIndex >= MAX_GUESSES) {
@@ -80,9 +97,9 @@ function App() {
     const guessSplit = guesses[currentWordIndex];
     const guessJoined = guesses[currentWordIndex]?.join('');
 
-    if (guessJoined.length < WORD_LENGTH) return;
+    if (guessJoined.length < wordLength) return;
 
-    if (!answers.has(guessJoined)) {
+    if (!answersSet.has(guessJoined)) {
       toast(`No such word in the dictionary :(`);
       return;
     }
@@ -164,14 +181,12 @@ function App() {
           : word,
       ),
     );
-    setCurrentLetterIndex((prev) =>
-      prev <= WORD_LENGTH - 1 ? prev + 1 : prev,
-    );
+    setCurrentLetterIndex((prev) => (prev <= wordLength - 1 ? prev + 1 : prev));
   }
 
   const restart = () => {
-    setAnswer(getAnswer());
-    setGuesses(getGuessesInitialState());
+    setAnswer(getAnswer(answersList));
+    setGuesses(getGuessesInitialState(wordLength));
     setCurrentWordIndex(0);
     setCurrentLetterIndex(0);
     setIsWin(false);
@@ -190,9 +205,10 @@ function App() {
         </div>
 
         <div className="mb-10 flex w-58 items-center justify-around gap-2">
-          {/*<button className="cursor-pointer">*/}
-          {/*  <Settings size={34} />*/}
-          {/*</button>*/}
+          <SettingsModal
+            wordLength={wordLength}
+            setWordLength={setWordLength}
+          />
           <button onClick={restart} className="cursor-pointer">
             <RefreshCcw size={34} />
           </button>
@@ -203,6 +219,7 @@ function App() {
           {Array.from({ length: MAX_GUESSES }).map((_, index) => (
             <WordRow
               key={index}
+              wordLength={wordLength}
               guess={guesses[index]}
               isPassed={index < currentWordIndex}
               answer={answer}
