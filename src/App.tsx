@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { RefreshCcw } from 'lucide-react';
 
-import type { LetterStatus, WordLength } from '@/lib/types.ts';
-import { MAX_GUESSES, WORD_LISTS } from '@/lib/constants.ts';
+import type { WordLength } from '@/lib/types.ts';
+import { MAX_GUESSES } from '@/lib/constants.ts';
 import { useWordleGame } from '@/hooks/useWordleGame.ts';
 import { useKeyboard } from '@/hooks/useKeyboard.ts';
 import { usePersistentState } from '@/hooks/usePersistentState.ts';
-import { toast } from '@/lib/toast.ts';
 
 import ToasterProvider from '@/providers/ToasterProvider.tsx';
 import WordRow from '@/components/WordRow.tsx';

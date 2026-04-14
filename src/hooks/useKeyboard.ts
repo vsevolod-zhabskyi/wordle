@@ -13,7 +13,7 @@ export function useKeyboard({
   onBackspace,
   isBlocked,
 }: KeyboardProps) {
-  const handlersRef = useRef();
+  const handlersRef = useRef<KeyboardProps>();
 
   handlersRef.current = {
     onEnter,
