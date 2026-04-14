@@ -1,4 +1,3 @@
-import React from 'react';
 import { Dialog } from 'radix-ui';
 import { Settings } from 'lucide-react';
 
@@ -8,10 +7,10 @@ import type { WordLength } from '@/lib/types.ts';
 
 interface SettingsModalProps {
   wordLength: number;
-  setWordLength: React.Dispatch<React.SetStateAction<WordLength>>;
+  onWordLengthSelect: (wordLength: WordLength) => void;
 }
 
-function SettingsModal({ wordLength, setWordLength }: SettingsModalProps) {
+function SettingsModal({ wordLength, onWordLengthSelect }: SettingsModalProps) {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
@@ -31,7 +30,7 @@ function SettingsModal({ wordLength, setWordLength }: SettingsModalProps) {
               {WORD_LENGTHS.map((wl) => (
                 <Dialog.Close key={wl} asChild>
                   <button
-                    onClick={() => setWordLength(wl)}
+                    onClick={() => onWordLengthSelect(wl)}
                     disabled={wl === wordLength}
                     className={cn(
                       'cursor-pointer rounded-md border-2 border-neutral-800 bg-neutral-200 px-3 py-2 dark:border-none dark:border-neutral-300 dark:bg-neutral-700',

@@ -11,6 +11,7 @@ export function usePersistentState<T>(
   const [value, setValue] = useState<T>(() => {
     try {
       const item = localStorage.getItem(key);
+      console.log(key, item);
       if (!item) {
         return typeof initialValue === 'function'
           ? (initialValue as () => T)()

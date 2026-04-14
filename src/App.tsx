@@ -70,11 +70,6 @@ function App() {
   const [hint, setHint] = useState<string | null>(null);
 
   useEffect(() => {
-    setAnswer(getAnswer(answersList));
-    restart();
-  }, [wordLength]);
-
-  useEffect(() => {
     if (!isWin && currentWordIndex >= MAX_GUESSES) {
       setIsLose(true);
     }
@@ -184,9 +179,14 @@ function App() {
     setCurrentLetterIndex((prev) => (prev <= wordLength - 1 ? prev + 1 : prev));
   }
 
-  const restart = () => {
-    setAnswer(getAnswer(answersList));
-    setGuesses(getGuessesInitialState(wordLength));
+  const onWordLengthSelect = (wordLength: WordLength) => {
+    setWordLength(wordLength);
+    restart(wordLength);
+  };
+
+  const restart = (newWordlength: WordLength = wordLength) => {
+    setAnswer(getAnswer(WORD_LISTS[newWordlength].list));
+    setGuesses(getGuessesInitialState(newWordlength));
     setCurrentWordIndex(0);
     setCurrentLetterIndex(0);
     setIsWin(false);
@@ -207,9 +207,9 @@ function App() {
         <div className="mb-10 flex w-58 items-center justify-around gap-2">
           <SettingsModal
             wordLength={wordLength}
-            setWordLength={setWordLength}
+            onWordLengthSelect={onWordLengthSelect}
           />
-          <button onClick={restart} className="cursor-pointer">
+          <button onClick={() => restart()} className="cursor-pointer">
             <RefreshCcw size={34} />
           </button>
           <HintButton answer={answer} hint={hint} setHint={setHint} />
