@@ -13,7 +13,7 @@ export function useKeyboard({
   onBackspace,
   isBlocked,
 }: KeyboardProps) {
-  const handlersRef = useRef<KeyboardProps>();
+  const handlersRef = useRef<KeyboardProps | null>(null);
 
   handlersRef.current = {
     onEnter,
@@ -23,11 +23,13 @@ export function useKeyboard({
   };
 
   function handleKeyDown(e: KeyboardEvent) {
+    if (e.ctrlKey || e.metaKey) return;
+
+    if (!handlersRef.current) return;
+
     const { onEnter, onLetter, onBackspace, isBlocked } = handlersRef.current;
 
     if (isBlocked) return;
-
-    if (e.ctrlKey || e.metaKey) return;
 
     if (e.code.startsWith('Key')) {
       const letter = e.code.replace('Key', '').toLowerCase();
