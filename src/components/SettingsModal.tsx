@@ -33,7 +33,7 @@ function SettingsModal({ wordLength, onWordLengthSelect }: SettingsModalProps) {
                     onClick={() => onWordLengthSelect(wl)}
                     disabled={wl === wordLength}
                     className={cn(
-                      'cursor-pointer rounded-md border-2 border-neutral-800 bg-neutral-200 px-3 py-2 transition duration-200 hover:bg-neutral-300 dark:border-none dark:border-neutral-300 dark:bg-neutral-700 dark:hover:bg-neutral-800',
+                      'cursor-pointer rounded-md border-2 border-neutral-800 bg-neutral-200 px-3 py-2 transition duration-200 hover:bg-neutral-300 dark:border-none dark:bg-neutral-700 dark:hover:bg-neutral-800',
                       {
                         'cursor-default bg-neutral-400 hover:bg-neutral-400 dark:bg-stone-800 dark:hover:bg-stone-800':
                           wl === wordLength,
